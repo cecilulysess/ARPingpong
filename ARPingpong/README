@@ -1,0 +1,51 @@
+OpenCV2.2 Usage explain
+=======================
+
+Here is a instruction for a extreme simple opencv 2.2 usage in this project 
+
+Prerequisition:
+For all project, this should be compiled at Visual Studio 2010
+
+For the TemplateProject, it was worked with OpenCV 2.2 in Win32 mode, therefore, it requires OpenCV 2.2 
+1. Please download it from
+	http://sourceforge.net/projects/opencvlibrary/files/opencv-win/2.2/
+
+2. Then, please set up OPENCV_DIR for you OpenCV installation directory, the directory should contains bin and include folders,
+	for example D:\Dropbox\OtherPrograms\CV\OpenCV2.2
+	To do this please run the command below:
+
+	setx -m OPENCV_DIR D:\Dropbox\OtherPrograms\CV\OpenCV2.2
+
+3. To run your program with OpenCV, please add <opencv_dir>\bin to your PATH env_variable
+
+3. If you need, please check whether you have had added the dependencies for OpenCV modules, it looks like
+	opencv_(Module name)(Version Number)d.lib  (d means libraries used for debug, for release version use non-d lib)
+	and here is the total debug list for 2.2
+
+	opencv_core220d.lib
+	opencv_imgproc220d.lib
+	opencv_highgui220d.lib
+	opencv_ml220d.lib
+	opencv_video220d.lib
+	opencv_features2d220d.lib
+	opencv_calib3d220d.lib
+	opencv_objdetect220d.lib
+	opencv_contrib220d.lib
+	opencv_legacy220d.lib
+	opencv_flann220d.lib
+
+	here is the total release list for 2.2
+
+	opencv_core220.lib
+	opencv_imgproc220.lib
+	opencv_highgui220.lib
+	opencv_ml220.lib
+	opencv_video220.lib
+	opencv_features2d220.lib
+	opencv_calib3d220.lib
+	opencv_objdetect220.lib
+	opencv_contrib220.lib
+	opencv_legacy220.lib
+	opencv_flann220.lib
+
+Validation of Setting
