@@ -52,7 +52,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,14 +77,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="component_test.cpp" />
+    <ClCompile Include="testforgit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ARRegistrationModule\ARRegistrationModule.vcxproj">
-      <Project>{65dbcb6f-2714-413e-ac36-b6a2419b233f}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
