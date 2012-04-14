@@ -20,11 +20,11 @@ namespace cv_helper{
   class OCVHL_CLASS_DECLSPEC CvHelper{
     public:
     // get a vector of matrix that contains each channels of image as 1 channel matrix
-    static std::vector<cv::Mat> getByChannel(const cv::Mat& image);
+    static std::vector<cv::Mat> getBGRByChannel(const cv::Mat& image);
 
     // get a vector of matrix that contains each channels of image as 3 channel matrix 
     //  (R,G,B only image respectively)
-    static std::vector<cv::Mat> getRGBImagesByChannel(const cv::Mat& image);
+    static std::vector<cv::Mat> getBGRImagesByChannel(const cv::Mat& image);
 
     // receive a rgb vector and show it
     static void imShowRGB(std::vector<cv::Mat> images);

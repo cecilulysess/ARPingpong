@@ -9,7 +9,7 @@ using namespace std;
 #endif
 
 namespace cv_helper{
-  std::vector<cv::Mat> CvHelper::getByChannel(const cv::Mat& image){
+  std::vector<cv::Mat> CvHelper::getBGRByChannel(const cv::Mat& image){
     std::vector<cv::Mat>* res_imgs = new std::vector<cv::Mat>();
     for( int i = 0; i < image.channels(); ++i ) {
       res_imgs->push_back(*(new cv::Mat( image.size(), image.type() )) );
@@ -35,7 +35,7 @@ namespace cv_helper{
     return *res_imgs;
   }
 
-  std::vector<cv::Mat> CvHelper::getRGBImagesByChannel(const cv::Mat& image){
+  std::vector<cv::Mat> CvHelper::getBGRImagesByChannel(const cv::Mat& image){
     std::vector<cv::Mat>* res_imgs = new std::vector<cv::Mat>();
     for( int i = 0; i < 3; ++i ) {
       cv::Mat cpimg = image.clone();
