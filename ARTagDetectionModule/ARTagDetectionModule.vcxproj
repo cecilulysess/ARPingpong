@@ -11,18 +11,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C87C9C13-C47D-4602-B136-454997D072FF}</ProjectGuid>
+    <ProjectGuid>{E93E7241-5266-4229-B174-F8BD47C63733}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ARPingpong</RootNamespace>
+    <RootNamespace>ARTagDetectionModule</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -51,11 +51,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_EXPORTINGARTDM;WIN32;_DEBUG;_WINDOWS;_USRDLL;ARTAGDETECTIONMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -67,32 +66,20 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_EXPORTINGARTDM;WIN32;NDEBUG;_WINDOWS;_USRDLL;ARTAGDETECTIONMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="component_test.cpp" />
+    <ClInclude Include="tag_detection_ops.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ARRegistrationModule\ARRegistrationModule.vcxproj">
-      <Project>{65dbcb6f-2714-413e-ac36-b6a2419b233f}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\ARTagDetectionModule\ARTagDetectionModule.vcxproj">
-      <Project>{e93e7241-5266-4229-b174-f8bd47c63733}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenCVHelperLibrary\OpenCVHelperLibrary.vcxproj">
-      <Project>{1d865193-c83c-4a1b-86f0-e301123437d0}</Project>
-    </ProjectReference>
+    <ClCompile Include="tag_detection_ops.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

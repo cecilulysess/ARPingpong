@@ -4,6 +4,7 @@
 #include "opencv2\core\core.hpp"
 #include "opencv2\highgui\highgui.hpp"
 
+
 #ifdef _EXPORTINGOCVHL
   #define OCVHL_CLASS_DECLSPEC    __declspec(dllexport)
 #else

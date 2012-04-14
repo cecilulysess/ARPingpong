@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ARRegistrationModule", "ARR
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCVHelperLibrary", "OpenCVHelperLibrary\OpenCVHelperLibrary.vcxproj", "{1D865193-C83C-4A1B-86F0-E301123437D0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ARTagDetectionModule", "ARTagDetectionModule\ARTagDetectionModule.vcxproj", "{E93E7241-5266-4229-B174-F8BD47C63733}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -25,6 +27,10 @@ Global
 		{1D865193-C83C-4A1B-86F0-E301123437D0}.Debug|Win32.Build.0 = Debug|Win32
 		{1D865193-C83C-4A1B-86F0-E301123437D0}.Release|Win32.ActiveCfg = Release|Win32
 		{1D865193-C83C-4A1B-86F0-E301123437D0}.Release|Win32.Build.0 = Release|Win32
+		{E93E7241-5266-4229-B174-F8BD47C63733}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E93E7241-5266-4229-B174-F8BD47C63733}.Debug|Win32.Build.0 = Debug|Win32
+		{E93E7241-5266-4229-B174-F8BD47C63733}.Release|Win32.ActiveCfg = Release|Win32
+		{E93E7241-5266-4229-B174-F8BD47C63733}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

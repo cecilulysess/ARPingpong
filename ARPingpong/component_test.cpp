@@ -9,6 +9,7 @@
 
 #include "ARRegistrationModule\registration_public_if.h"
 #include "OpenCVHelperLibrary\cv_helper_lib.h"
+#include "ARTagDetectionModule\tag_detection_ops.h"
 using namespace std;
 
 //VARIABLES for CODEBOOK METHOD:
@@ -53,6 +54,9 @@ int main(){
           cv::imshow("picture window", frame);
           //uchar px = frame.ptr<uchar>(1) [3*50 + 0];
           //cout<<(unsigned short)px<<endl;
+
   }
+
+  tag_detection_module::TagDetectionOp::DetectTag(frame);
   return 0;
 }
