@@ -52,6 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_EXPORTINGARTDM;WIN32;_DEBUG;_WINDOWS;_USRDLL;ARTAGDETECTIONMODULE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,6 +81,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tag_detection_ops.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenCVHelperLibrary\OpenCVHelperLibrary.vcxproj">
+      <Project>{1d865193-c83c-4a1b-86f0-e301123437d0}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

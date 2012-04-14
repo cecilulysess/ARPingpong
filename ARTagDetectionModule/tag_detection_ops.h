@@ -16,7 +16,7 @@ namespace cv {
 namespace tag_detection_module{
   class ARTDM_CLASS_DECLSPEC TagDetectionOp {
     public:
-    static void DetectTag( cv::Mat& image );
+    static cv::Mat DetectTag( cv::Mat& image );
   };
 }//ns tag_detection_module
 
