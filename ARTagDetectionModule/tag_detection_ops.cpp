@@ -32,15 +32,15 @@ namespace tag_detection_module {
      int width=chanel_H.size().width;
      int height=chanel_H.size().height;
 
-     cv::Mat chanel_S_result =new cv::Mat(chanel_S.size(),chanel_S.type());
-     cv::cvThreshold(0;
+     cv::Mat* chanel_S_result =new cv::Mat(chanel_S.size(),chanel_S.type());
+     //cv::cvThreshold(chanel_S,*chanel_S_result,threshold_RH_high,0);
 
 
        ///
-       cv::Mat s_thresholed_img = ....
-       cv::Mat v_thresholed_img = ...
-       cv::s_v_mask = s_thresholed_img && v_thresholed_img
-       //
+       //cv::Mat s_thresholed_img = ....
+       //cv::Mat v_thresholed_img = ...
+       //cv::s_v_mask = s_thresholed_img && v_thresholed_img
+       ////
     return *img_hsv;
     
 

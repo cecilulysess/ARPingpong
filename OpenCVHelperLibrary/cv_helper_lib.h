@@ -30,6 +30,8 @@ namespace cv_helper{
 
     // receive a rgb vector and show it
     static void imShowRGB(std::vector<cv::Mat> images);
+
+
   };
 }//ns cv_helper
 

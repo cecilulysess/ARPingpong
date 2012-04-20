@@ -30,7 +30,7 @@ int main(){
 
   cv::Mat frame;
   // for rgb color channel test
-  cv::VideoCapture cap("D:\\Dropbox\\Project PlanetAR\\UDResearch\\ExperimentData\\v5rgbtest.avi");
+  cv::VideoCapture cap(1);
   //cv::VideoCapture cap("D:\\Downloads\\v4.avi");
 
   if (!cap.isOpened()) {
@@ -50,19 +50,23 @@ int main(){
   
           cap >> frame;     
           //frame.copyTo(extframe);
-          extframe = cv_helper::CvHelper::getBGRByChannel(frame);
+          /*extframe = cv_helper::CvHelper::getBGRByChannel(frame);
           
           cv::imshow("B channel", extframe.at(0) );
           cv::imshow("G channel", extframe.at(1) );
-          cv::imshow("R channel", extframe.at(2) );
+          cv::imshow("R channel", extframe.at(2) );*/
+          
           cv::imshow("picture window", frame);
+
+
+
           //uchar px = frame.ptr<uchar>(1) [3*50 + 0];
           //cout<<(unsigned short)px<<endl;
-          hsvframe = tag_detection_module::TagDetectionOp::DetectTag(frame);
-          extframe = cv_helper::CvHelper::getBGRByChannel(hsvframe);
+          //hsvframe = tag_detection_module::TagDetectionOp::DetectTag(frame);
+          /*extframe = cv_helper::CvHelper::getBGRByChannel(hsvframe);
           cv::imshow("H channel", extframe.at(0) );
           cv::imshow("S channel", extframe.at(1) );
-          cv::imshow("V channel", extframe.at(2) );
+          cv::imshow("V channel", extframe.at(2) );*/
   }
   //frame=cv::imread("D:\\Dropbox\\Project PlanetAR\\UDResearch\\ExperimentData\\rgb.jpg");
   
