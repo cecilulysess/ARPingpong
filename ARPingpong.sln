@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ARTagDetectionModule", "ART
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCVHelperLibrary", "OpenCVHelperLibrary\OpenCVHelperLibrary.vcxproj", "{BCC1FDBA-FE11-4E16-A150-2A93BE42DE1E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraCalibrationModule", "CameraCalibrationModule\CameraCalibrationModule.vcxproj", "{40042AD5-DFE0-4297-998E-E1DB220AD238}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraCalibrationModule", "PositionEstimationModule\CameraCalibrationModule.vcxproj", "{40042AD5-DFE0-4297-998E-E1DB220AD238}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

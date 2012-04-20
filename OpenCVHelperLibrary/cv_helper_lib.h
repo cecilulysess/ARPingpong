@@ -31,7 +31,8 @@ namespace cv_helper{
     // receive a rgb vector and show it
     static void imShowRGB(std::vector<cv::Mat> images);
 
-
+    // show matrix as matrix format, at double or CV_64FC1
+    static void show_matrix_fc64(const cv::Mat& matrix);
   };
 }//ns cv_helper
 

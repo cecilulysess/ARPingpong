@@ -93,6 +93,9 @@
     <ProjectReference Include="..\OpenCVHelperLibrary\OpenCVHelperLibrary.vcxproj">
       <Project>{bcc1fdba-fe11-4e16-a150-2a93be42de1e}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\PositionEstimationModule\CameraCalibrationModule.vcxproj">
+      <Project>{40042ad5-dfe0-4297-998e-e1db220ad238}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

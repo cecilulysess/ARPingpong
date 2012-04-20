@@ -2,6 +2,7 @@
 #include "cv_helper_lib.h"
 #include "opencv2\highgui\highgui.hpp"
 #include "opencv2\core\core.hpp"
+#include <stdlib.h>
 
 #ifdef _DEBUG
 #include <iostream>
@@ -53,6 +54,17 @@ namespace cv_helper{
   }
 
   void CvHelper::imShowRGB(std::vector<cv::Mat> images){
+  }
+
+
+  void CvHelper::show_matrix_fc64(const cv::Mat& matrix){
+    for (int i = 0 ;i < matrix.rows; ++i ) {
+      printf("\t");
+      for (int j = 0 ; j < matrix.cols; ++j ) {
+        printf("%8.3f ", matrix.at<double>(i,j));
+      }
+      printf("\n");
+    }
   }
 
 }//ns cv_helper
