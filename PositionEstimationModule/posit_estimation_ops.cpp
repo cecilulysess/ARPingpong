@@ -19,8 +19,9 @@ namespace position_estimation_module{
         // like c:\\chessboards directory
         const std::string chessboard_image_base_dir,  
         cv::Size & boardSize) {
-   
-    vector<string> filelist;
+    
+     
+    vector<string>& filelist = this->image_filename_list;
     AddAllFilesInDir(filelist, chessboard_image_base_dir + "\\*.jpg");
     // load files at chessboard_image_base_dir
 #ifdef _DEBUG
@@ -47,7 +48,7 @@ namespace position_estimation_module{
     int successes = 0;
     // for all viewpoints
     for (int i = 0; i < filelist.size(); i++) {
-      std::cout<<"process file:" <<filelist.at(i) <<std::endl;
+      std::cout<<"Process file: " <<filelist.at(i) <<std::endl;
       // Open the image
       image = cv::imread(filelist[i],0);
       // Get the chessboard corners

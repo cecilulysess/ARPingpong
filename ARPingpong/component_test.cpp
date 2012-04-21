@@ -31,7 +31,7 @@ int main(){
   //cout<<"Test:"<<registration_module::RegistrationOps::Add(1, 3.5)<<endl;
 
   string chess_board_path = "C:\\Users\\Julian\\Pictures\\camera_calib";
-  position_estimation_module::CameraCalibrator::capture_calibration_images(chess_board_path, 1);
+  //position_estimation_module::CameraCalibrator::capture_calibration_images(chess_board_path, 1);
 
   position_estimation_module::CameraCalibrator cam_cal;
   cout<<"successful added chess boards image: "<<
@@ -41,6 +41,7 @@ int main(){
   cout<<"reproject error: "<<cam_cal.calibrate(img_size)<<endl;
   cv::namedWindow("origin_img", CV_WINDOW_AUTOSIZE );
   cv::namedWindow("undist_img", CV_WINDOW_AUTOSIZE );
+  cout<<"Try to undistort image "<<cam_cal.image_filename_list_().at(2)<<endl;
   cv::imshow("origin_img", cv::imread(cam_cal.image_filename_list_().at(2)) );
   cv::imshow("undist_img", cam_cal.remap( cv::imread(cam_cal.image_filename_list_().at(2)) ));
   cout<<"Camera Matrix:"<<endl;
