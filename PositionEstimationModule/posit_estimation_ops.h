@@ -37,7 +37,7 @@ namespace position_estimation_module{
 
     // remove distortion in an image (after calibration)
     cv::Mat remap(const cv::Mat &image) ;
-
+    
     // get camera matrix
     cv::Mat camera_matrix_() {return this->camera_matrix; } 
 

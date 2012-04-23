@@ -24,6 +24,7 @@ void AddAllFilesInDir(vector<string>& filenames, string dir_base);
 void capture_calibration_images();
 
 int main(){
+  
   //char* image_addr = "D:\\Dropbox\\Project PlanetAR\\UDResearch\\ExperimentData\\rgb.jpg";
   //cv::Mat img = cv::imread(image_addr, CV_LOAD_IMAGE_COLOR);
   //cv::imshow("Image to show", img);

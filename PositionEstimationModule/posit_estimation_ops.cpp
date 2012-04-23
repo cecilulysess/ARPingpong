@@ -53,9 +53,15 @@ namespace position_estimation_module{
       image = cv::imread(filelist[i],0);
       // Get the chessboard corners
       bool found = cv::findChessboardCorners(
-      image, boardSize, imageCorners);
+        image, boardSize, imageCorners);
       cv::drawChessboardCorners(image, boardSize, imageCorners, found);
+#ifdef _DEBUG
+      string window_name = "FindChessBoard" + filelist.at(i).substr(
+        filelist.at(i).find_first_of('\\'), filelist.at(i).length() - 1 );
+      cv::namedWindow(window_name);
+      cv::imshow(window_name, image);
       cv::waitKey(1000);
+#endif
       try{
       // Get subpixel accuracy on the corners
         cv::cornerSubPix( image, imageCorners,
