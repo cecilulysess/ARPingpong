@@ -33,6 +33,33 @@ namespace cv_helper{
 
     // show matrix as matrix format, at double or CV_64FC1
     static void show_matrix_fc64(const cv::Mat& matrix);
+    
+    // return the [l, a, b] channels as each is one channel image, if is_debug
+    // then display each channel
+    static std::vector<cv::Mat> get_lab_color(const cv::Mat& image, bool is_debug);
+  };
+
+  // extractor to extract color channels by its channels that as CV_8U Mat
+  // note, currently supoort only Lab
+  //  Lab: channel_L, channel_a, channel_b, 
+  //  HSV: channel_H, channel_S, channel_V, 
+  //  RGB: channel_R, channel_G, channel_B
+  class OCVHL_CLASS_DECLSPEC ColorChannelExtractor {
+  public:
+    cv::Mat channel_L_() { return this->channel_L; }
+    cv::Mat channel_a_() { return this->channel_a; }
+    cv::Mat channel_b_() { return this->channel_b; }
+    cv::Mat channel_H_() { return this->channel_H; }
+    cv::Mat channel_S_() { return this->channel_S; }
+    cv::Mat channel_V_() { return this->channel_V; }
+    cv::Mat channel_R_() { return this->channel_H; }
+    cv::Mat channel_G_() { return this->channel_S; }
+    cv::Mat channel_B_() { return this->channel_V; }
+
+  private:
+    cv::Mat channel_L, channel_a, channel_b, 
+            channel_H, channel_S, channel_V, 
+            channel_R, channel_G, channel_B;
   };
 }//ns cv_helper
 
