@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tag_detection_ops.cpp" />
+    <ClCompile Include="tag_detection_Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenCVHelperLibrary\OpenCVHelperLibrary.vcxproj">
