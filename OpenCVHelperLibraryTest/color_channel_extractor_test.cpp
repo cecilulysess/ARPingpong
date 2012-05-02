@@ -1,6 +1,10 @@
 #include "test_lists.h"
 
+#include <fstream>
+#include <iostream>
+
 #include "opencv2\core\core.hpp"
+#include "opencv2\highgui\highgui.hpp"
 
 #include "cv_helper_lib.h"
 
@@ -15,5 +19,41 @@ namespace OCHL_test{
       }
       return false;
     }
-  }
+
+    bool ShouldContainsLabChannels() {
+      //system("%CD%");
+      std::fstream f;
+      f.open("TestFiles\\colorsc.png", std::ios::in);
+      if ( !f ) {
+        std::cout<<"Cannot Find test Image"<<std::endl;
+        return false;
+      }
+      cv::Mat testimg = cv::imread("TestFiles\\colorsc.png");
+      cv::namedWindow("ShouldContainsLabChannels");
+      
+      cv_helper::ColorChannelExtractor extractor;
+      extractor.ExtractNewImage(testimg);
+      try {
+#ifdef _DEBUG
+        cv::imshow("ShouldContainsLabChannels", testimg);
+        cv::waitKey(300);
+        cv::imshow("ShouldContainsLabChannels", extractor.get_channels("L"));
+        cv::waitKey(300);
+        cv::imshow("ShouldContainsLabChannels", extractor.get_channels("a"));
+        cv::waitKey(300);
+        cv::imshow("ShouldContainsLabChannels", extractor.get_channels("b"));
+        cv::waitKey(300);
+        cv::imshow("ShouldContainsLabChannels", extractor.get_image_in_colorspace("Lab"));
+        cv::waitKey(300);
+#endif
+        assert(extractor.get_channels("L").channels() == 1);
+        assert(extractor.get_channels("a").channels() == 1);
+        assert(extractor.get_channels("b").channels() == 1);
+        assert(extractor.get_image_in_colorspace("Lab").channels() == 3);
+      } catch (...) {
+        return false;
+      }
+      return true;
+    }
+  } // ns ccet
 }

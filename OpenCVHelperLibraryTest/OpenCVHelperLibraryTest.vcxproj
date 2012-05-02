@@ -88,6 +88,9 @@
   <ItemGroup>
     <ClInclude Include="test_lists.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="TestFiles\colorsc.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

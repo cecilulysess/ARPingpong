@@ -35,21 +35,21 @@ namespace cv_helper{
     if ( this->proc_image == NULL ) {
       throw std::invalid_argument("Must invoke ExtractNewImage first");
     }
-    if ( (channel_name.compare("R") ||
-          channel_name.compare("G") ||
-          channel_name.compare("B")) &&
+    if ( (channel_name.compare("R") == 0 ||
+          channel_name.compare("G") == 0  ||
+          channel_name.compare("B") == 0  ) &&
           !this->is_BGR_ready ) {
       this->ExtractBGRChannels();
     }
-    if ( (channel_name.compare("H") ||
-          channel_name.compare("S") ||
-          channel_name.compare("V")) &&
+    if ( (channel_name.compare("H") == 0  ||
+          channel_name.compare("S") == 0  ||
+          channel_name.compare("V") == 0 ) &&
           !this->is_HSV_ready ) {
       this->ExtractHSVChannels();
     }
-    if ( (channel_name.compare("L") ||
-          channel_name.compare("a") ||
-          channel_name.compare("b")) &&
+    if ( (channel_name.compare("L") == 0  ||
+          channel_name.compare("a") == 0  ||
+          channel_name.compare("b") == 0 ) &&
           !this->is_Lab_ready ) {
       this->ExtractLabChannels();
     }
@@ -59,6 +59,35 @@ namespace cv_helper{
         this->channels.find(channel_name);
     if ( itr == this->channels.end() ) {
       throw std::invalid_argument("Specified channel_name is invalid");
+    } else {
+      return itr->second;
+    }
+  }
+
+  const cv::Mat& ColorChannelExtractor::get_image_in_colorspace(const std::string colorspace){
+    if ( colorspace.length() < 3 ) {
+      throw std::invalid_argument("Specified channel name is invalid");
+    }
+    if ( this->proc_image == NULL ) {
+      throw std::invalid_argument("Must invoke ExtractNewImage first");
+    }
+    if ( colorspace.compare("BGR") == 0  &&
+          !this->is_BGR_ready ) {
+      this->ExtractBGRChannels();
+    }
+    if ( colorspace.compare("HSV") == 0  &&
+          !this->is_HSV_ready ) {
+      this->ExtractHSVChannels();
+    }
+    if ( colorspace.compare("Lab") == 0  &&
+          !this->is_Lab_ready ) {
+      this->ExtractLabChannels();
+    }
+    //this->channels
+    std::map<const std::string, cv::Mat>::iterator itr = 
+        this->channels.find(colorspace);
+    if ( itr == this->channels.end() ) {
+      throw std::invalid_argument("Specified colorspace is invalid");
     } else {
       return itr->second;
     }
@@ -87,7 +116,7 @@ namespace cv_helper{
       cv::Mat_<uchar>::iterator itl = channel_L.begin<uchar>(),
                                 ita = channel_a.begin<uchar>(),
                                 itb = channel_b.begin<uchar>();
-      this->channels["HSV_image"] = lab_image;
+      this->channels["Lab"] = lab_image;
       for ( cv::MatIterator_<cv::Vec3b> itr = lab_image.begin<cv::Vec3b>();
           itr != lab_image.end<cv::Vec3b>(); itr++, itl++, ita++, itb++  ) {
         (*itl) = (*itr)[0];

@@ -39,7 +39,7 @@ namespace cv_helper{
   //  Lab: L, a, b
   //  HSV: H, S, V
   //  BGR: B, G, R
-  // you can also use  HSV_image, BGR_image, Lab_image
+  // you can also use  HSV, BGR, Lab
   // to get the converted image
   class OCVHL_CLASS_DECLSPEC ColorChannelExtractor {
   public:
@@ -49,6 +49,10 @@ namespace cv_helper{
     // get channel by its name specified in the class comment
     // throw invalid exception if invalid channel_name
     const cv::Mat& get_channels(const std::string channel_name);
+
+    // get image in specified colorspace
+    // support HSV, BGR, Lab
+    const cv::Mat& get_image_in_colorspace(const std::string colorspace);
 
     // extract channels from a new image, you can get the 
     // channel result by get_channels method after invoking this
