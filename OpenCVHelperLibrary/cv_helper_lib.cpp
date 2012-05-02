@@ -12,6 +12,7 @@ using namespace std;
 
 namespace cv_helper{
   std::vector<cv::Mat> CvHelper::getBGRByChannel(const cv::Mat& image){
+
     std::vector<cv::Mat>* res_imgs = new std::vector<cv::Mat>();
     for( int i = 0; i < image.channels(); ++i ) {
       res_imgs->push_back(*(new cv::Mat( image.size(), image.type() )) );
@@ -68,18 +69,7 @@ namespace cv_helper{
     }
   }
 
-  std::vector<cv::Mat> CvHelper::get_lab_color(const cv::Mat& image, bool is_debug){
-    std::vector<cv::Mat>* result_array = new std::vector<cv::Mat>();
-    cv::Mat* channel_l = new cv::Mat(image.size, CV_8U);
-    cv::Mat* channel_a = new cv::Mat(image.size, CV_8U);
-    cv::Mat* channel_b = new cv::Mat(image.size, CV_8U);
-    result_array->push_back(*channel_l);
-    result_array->push_back(*channel_a);
-    result_array->push_back(*channel_b);
-
-
-
-  }
+  
 
 
 }//ns cv_helper
