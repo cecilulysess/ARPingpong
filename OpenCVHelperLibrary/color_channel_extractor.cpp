@@ -133,6 +133,28 @@ namespace cv_helper{
     throw std::invalid_argument("Not Implemented yet");
   }
   void ColorChannelExtractor::ExtractHSVChannels() {
-    throw std::invalid_argument("Not Implemented yet");
+    if ( this->is_HSV_ready ) {
+      return;
+    } else {
+      cv::Mat hsv_image(this->proc_image->size(), this->proc_image->type());
+      cv::Mat channel_H(this->proc_image->size(), CV_8U);
+      cv::Mat channel_S(this->proc_image->size(), CV_8U);
+      cv::Mat channel_V(this->proc_image->size(), CV_8U);
+      cv::cvtColor(*(this->proc_image), hsv_image, CV_BGR2HSV);
+      cv::Mat_<uchar>::iterator itl = channel_H.begin<uchar>(),
+                                ita = channel_S.begin<uchar>(),
+                                itb = channel_V.begin<uchar>();
+      this->channels["HSV"] = hsv_image;
+      for ( cv::MatIterator_<cv::Vec3b> itr = hsv_image.begin<cv::Vec3b>();
+          itr != hsv_image.end<cv::Vec3b>(); itr++, itl++, ita++, itb++  ) {
+        (*itl) = (*itr)[0];
+        (*ita) = (*itr)[1];
+        (*itb) = (*itr)[2];
+      }
+      this->channels["H"] = channel_H;
+      this->channels["S"] = channel_S;
+      this->channels["V"] = channel_V;
+      this->is_HSV_ready = true;
+    }
   }
 } // ns cv_helper

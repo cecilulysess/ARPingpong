@@ -20,7 +20,7 @@ void TestFunction( bool (*func)(), const string func_name ) {
   HANDLE hConsole;
   hConsole = GetStdHandle (STD_OUTPUT_HANDLE);
 
-  cout<<"Testing:"<<func_name<<"..."<<endl;
+  cout<<"\nTesting:"<<func_name<<"..."<<endl;
   if ( func() ) {
     SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     cout<<"Passed"<<endl;
@@ -42,5 +42,7 @@ int main(){
   TestFunction(OCHL_test::color_channel_extractor_test::
     ShouldContainsLabChannels,
     "ShouldContainsLabChannels");
-
+  TestFunction(OCHL_test::color_channel_extractor_test::
+    ShouldContainsLabChannels,
+    "ShouldContainsHSVChannels");
 }

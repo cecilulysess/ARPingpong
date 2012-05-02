@@ -55,5 +55,40 @@ namespace OCHL_test{
       }
       return true;
     }
+
+    bool ShouldContainsHSVChannels() {
+      std::fstream f;
+      f.open("TestFiles\\colorsc.png", std::ios::in);
+      if ( !f ) {
+        std::cout<<"Cannot Find test Image"<<std::endl;
+        return false;
+      }
+      cv::Mat testimg = cv::imread("TestFiles\\colorsc.png");
+      cv::namedWindow("ShouldContainsHSVChannels");
+      
+      cv_helper::ColorChannelExtractor extractor;
+      extractor.ExtractNewImage(testimg);
+      try {
+#ifdef _DEBUG
+        cv::imshow("ShouldContainsHSVChannels", testimg);
+        cv::waitKey(300);
+        cv::imshow("ShouldContainsHSVChannels", extractor.get_channels("H"));
+        cv::waitKey(300);
+        cv::imshow("ShouldContainsHSVChannels", extractor.get_channels("S"));
+        cv::waitKey(300);
+        cv::imshow("ShouldContainsHSVChannels", extractor.get_channels("V"));
+        cv::waitKey(300);
+        cv::imshow("ShouldContainsHSVChannels", extractor.get_image_in_colorspace("HSV"));
+        cv::waitKey(300);
+#endif
+        assert(extractor.get_channels("H").channels() == 1);
+        assert(extractor.get_channels("S").channels() == 1);
+        assert(extractor.get_channels("V").channels() == 1);
+        assert(extractor.get_image_in_colorspace("HSV").channels() == 3);
+      } catch (...) {
+        return false;
+      }
+      return true;
+    }
   } // ns ccet
 }
