@@ -80,6 +80,7 @@
     <ClInclude Include="tag_detection_ops.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dummy_tag_detector.cpp" />
     <ClCompile Include="tag_detection_ops.cpp" />
     <ClCompile Include="tag_detection_Test.cpp" />
   </ItemGroup>

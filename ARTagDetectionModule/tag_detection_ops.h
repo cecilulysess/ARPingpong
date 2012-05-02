@@ -1,9 +1,10 @@
 #ifndef TAG_DETECTION_OPS_H_
 #define TAG_DETECTION_OPS_H_
 
+// ## to be clean
 #include "opencv2\core\core.hpp"
-#include "opencv2\imgproc\imgproc.hpp"
-#include "opencv2\highgui\highgui.hpp"
+//#include "opencv2\imgproc\imgproc.hpp"
+//#include "opencv2\highgui\highgui.hpp"
 
 
 #ifdef _EXPORTINGARTDM
@@ -17,8 +18,47 @@
 namespace cv {
   class Mat;
 }
+namespace cv_helper{
+  class ColorChannelExtractor;
+}
 
 namespace tag_detection_module{
+  // a struct used for save a threshold range
+  typedef struct threshold_range {
+    float left, right;
+  };
+//===================Dummy detect function======================
+  // dummy class, for registration module development purpose
+  class ARTDM_CLASS_DECLSPEC DummyTagDetector {
+  public:
+    DummyTagDetector();
+    ~DummyTagDetector();
+    //---------------From interface definition between----------
+    //      registration module and graphic generate module
+    // plane_corner_points  		给定平面的4个点坐标，顺序如下
+    //              其中P1，P2为G P3为R P4为B
+    //								P1 ------------ P2
+    //								|	              |
+    //								|               |
+    //								|               |
+    //								P4 ------------ P3
+    // plane_size					[长， 宽] 即上图的｜P1 P2 | 和 | P2 P3 |
+    const std::vector<cv::Point2d>& tag_centers_();
+    
+    const std::vector<cv::Point2d>& DetectTags(
+        const cv::Mat& frame2detect);
+
+  private:
+    void DetectTags_();
+
+    std::vector<cv::Point2d> tag_centers;
+    cv_helper::ColorChannelExtractor* extractor;
+    std::vector<threshold_range> L_channel_thresholds;
+    std::vector<threshold_range> a_channel_thresholds;
+    std::vector<threshold_range> b_channel_thresholds;
+  };
+
+//--------------------------------------------------------------
 
 /*the tag to identify defferent color*/
   enum  cvTagType{
@@ -73,6 +113,8 @@ namespace tag_detection_module{
   };
 //the test function of tag detect module 
 int ARTDM_CLASS_DECLSPEC tag_detection_Test(); 
+
+
 }//ns tag_detection_module
 
 #endif //TAG_DETECTION_OPS_H_

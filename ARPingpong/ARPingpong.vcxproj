@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ar_pingpong_main.cpp" />
     <ClCompile Include="component_test.cpp" />
   </ItemGroup>
   <ItemGroup>
