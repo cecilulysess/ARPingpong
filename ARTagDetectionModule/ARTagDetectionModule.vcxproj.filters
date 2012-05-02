@@ -23,5 +23,8 @@
     <ClCompile Include="tag_detection_ops.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tag_detection_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

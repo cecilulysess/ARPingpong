@@ -31,24 +31,24 @@ int main(){
   //cv::waitKey();
   //cout<<"Test:"<<registration_module::RegistrationOps::Add(1, 3.5)<<endl;
 
-  string chess_board_path = "C:\\Users\\Julian\\Pictures\\camera_calib";
-  //position_estimation_module::CameraCalibrator::capture_calibration_images(chess_board_path, 1);
+  //string chess_board_path = "C:\\Users\\Julian\\Pictures\\camera_calib";
+  ////position_estimation_module::CameraCalibrator::capture_calibration_images(chess_board_path, 1);
 
-  position_estimation_module::CameraCalibrator cam_cal;
-  cout<<"successful added chess boards image: "<<
-      cam_cal.addChessboardPoints(chess_board_path, cv::Size(11,9) )
-      <<endl;
-  cv::Size img_size(640,480);
-  cout<<"reproject error: "<<cam_cal.calibrate(img_size)<<endl;
-  cv::namedWindow("origin_img", CV_WINDOW_AUTOSIZE );
-  cv::namedWindow("undist_img", CV_WINDOW_AUTOSIZE );
-  cout<<"Try to undistort image "<<cam_cal.image_filename_list_().at(2)<<endl;
-  cv::imshow("origin_img", cv::imread(cam_cal.image_filename_list_().at(2)) );
-  cv::imshow("undist_img", cam_cal.remap( cv::imread(cam_cal.image_filename_list_().at(2)) ));
-  cout<<"Camera Matrix:"<<endl;
-  cv_helper::CvHelper::show_matrix_fc64(cam_cal.camera_matrix_());
-  
-  cv::waitKey(0);
+  //position_estimation_module::CameraCalibrator cam_cal;
+  //cout<<"successful added chess boards image: "<<
+  //    cam_cal.addChessboardPoints(chess_board_path, cv::Size(11,9) )
+  //    <<endl;
+  //cv::Size img_size(640,480);
+  //cout<<"reproject error: "<<cam_cal.calibrate(img_size)<<endl;
+  //cv::namedWindow("origin_img", CV_WINDOW_AUTOSIZE );
+  //cv::namedWindow("undist_img", CV_WINDOW_AUTOSIZE );
+  //cout<<"Try to undistort image "<<cam_cal.image_filename_list_().at(2)<<endl;
+  //cv::imshow("origin_img", cv::imread(cam_cal.image_filename_list_().at(2)) );
+  //cv::imshow("undist_img", cam_cal.remap( cv::imread(cam_cal.image_filename_list_().at(2)) ));
+  //cout<<"Camera Matrix:"<<endl;
+  //cv_helper::CvHelper::show_matrix_fc64(cam_cal.camera_matrix_());
+  //
+  //cv::waitKey(0);
 
   //cv::Mat frame = cv::imread("C:\\Users\\Julian\\Pictures\\camera_calib\\28.jpg", CV_LOAD_IMAGE_GRAYSCALE);
   
@@ -105,8 +105,8 @@ int main(){
   //        cv::imshow("V channel", extframe.at(2) );*/
   //}
   //frame=cv::imread("D:\\Dropbox\\Project PlanetAR\\UDResearch\\ExperimentData\\rgb.jpg");
-  
-  return 0;
+	tag_detection_module::tag_detection_Test();
+	return  0;
 }
 
 
