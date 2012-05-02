@@ -69,7 +69,22 @@ namespace cv_helper{
     }
   }
 
-  
+  void CvHelper::PrintPointValueWhenLeftClick(int mouse_event, int x, int y, int flags, void* param){
+    if ( mouse_event == CV_EVENT_LBUTTONUP && param != NULL ) {
+      //cout<<"Trying :"<<x <<", " << y <<endl;
+      cv::Mat* image = (cv::Mat*) param;
+      cv::Vec3b value = (*image).at<cv::Vec3b>(y,x);
+      cout<<"Value at ("<<x <<", "<<y<<") is: "<< (int) value[0] <<" "<<(int) value[1] <<" "<<(int) value[2]<<endl;
+    }
+  }
 
+  void CvHelper::LabThresholdingByRange(
+        const std::vector<threshold_range>& lab_range, 
+        const cv::Mat src, 
+        cv::Mat dst) {
+    if ( src.channels() != 3 ) {
+      throw std::invalid_argument("Source image is not a 3 channel image");
+    }
 
+  }
 }//ns cv_helper

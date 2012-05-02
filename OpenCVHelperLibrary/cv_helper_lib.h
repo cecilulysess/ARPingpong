@@ -16,9 +16,19 @@ namespace cv{
 };
 
 namespace cv_helper{
+#ifndef THRES_RANGE_
+#define THRES_RANGE_
+  // a struct used for save a threshold range
+  typedef struct threshold_range {
+    float left, right;
+  };
+#endif
 
   class OCVHL_CLASS_DECLSPEC CvHelper{
     public:
+    // a delegate for cv::CreateMouseCallback
+    static void PrintPointValueWhenLeftClick(int mouse_event, int x, int y, int flags, void* param);
+
     // get a vector of matrix that contains each channels of image as 1 channel matrix
     static std::vector<cv::Mat> getBGRByChannel(const cv::Mat& image);
 
@@ -32,6 +42,13 @@ namespace cv_helper{
     // show matrix as matrix format, at double or CV_64FC1
     static void show_matrix_fc64(const cv::Mat& matrix);
     
+    // thresholding an image by given threshold_range for
+    // L a b channels
+    // the src image should be a 3 channels mat in Lab format
+    static void LabThresholdingByRange(
+        const std::vector<threshold_range>& lab_range, 
+        const cv::Mat src, 
+        cv::Mat dst);
   };
 
   // extractor to extract color channels by its channels that as CV_8U Mat

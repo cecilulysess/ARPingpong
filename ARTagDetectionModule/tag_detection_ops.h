@@ -20,13 +20,17 @@ namespace cv {
 }
 namespace cv_helper{
   class ColorChannelExtractor;
-}
-
-namespace tag_detection_module{
+#ifndef THRES_RANGE_
+#define THRES_RANGE_
   // a struct used for save a threshold range
   typedef struct threshold_range {
     float left, right;
   };
+#endif
+}
+
+namespace tag_detection_module{
+  
 //===================Dummy detect function======================
   // dummy class, for registration module development purpose
   class ARTDM_CLASS_DECLSPEC DummyTagDetector {
@@ -47,15 +51,21 @@ namespace tag_detection_module{
     
     const std::vector<cv::Point2d>& DetectTags(
         const cv::Mat& frame2detect);
+    static std::vector<threshold_range>& InitThresholdRanges();
 
   private:
     void DetectTags_();
 
     std::vector<cv::Point2d> tag_centers;
     cv_helper::ColorChannelExtractor* extractor;
-    std::vector<threshold_range> L_channel_thresholds;
+    cv::Mat Lab_image;
+    //tag thresholds in order of threshold for L a b
+    static std::vector<threshold_range> green_tag_thresholds;
+
+    static bool is_threshold_ranges_inited;
+    /*std::vector<threshold_range> L_channel_thresholds;
     std::vector<threshold_range> a_channel_thresholds;
-    std::vector<threshold_range> b_channel_thresholds;
+    std::vector<threshold_range> b_channel_thresholds;*/
   };
 
 //--------------------------------------------------------------

@@ -12,6 +12,8 @@ int main() {
     return 1;
   }
   cv::namedWindow("Input");
+  CvMouseCallback onMouse = &cv_helper::CvHelper::PrintPointValueWhenLeftClick;
+  //cv::setMouseCallback("Input", onMouse, (void*) &frame);
   tag_detection_module::DummyTagDetector tag_dtc;
   while (cv::waitKey(30) == -1) {
     webcam >> frame;    
