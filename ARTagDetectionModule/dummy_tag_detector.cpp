@@ -7,6 +7,20 @@
 #include <opencv2\imgproc\imgproc.hpp>
 
 namespace tag_detection_module{
+  // if new_pt changed less than change_threshold to origin, then return the old
+  // one, else return true, and set new_pt to value of origin, otherwise, do nothing
+  inline bool StablizePoint(const cv::Point2f& origin, 
+      cv::Point2f& new_pt, 
+      double change_threshold) {
+    double dist = cv_helper::CvHelper::GetSqrEuclideanDist( 
+        origin, new_pt);
+    if ( dist < change_threshold * change_threshold) {
+      new_pt.x = origin.x;
+      new_pt.y = origin.y;
+      return true;
+    }
+    return false;
+  }
   std::vector<cv_helper::threshold_range> DummyTagDetector::green_tag_thresholds;
   std::vector<cv_helper::threshold_range> DummyTagDetector::blue_tag_thresholds;
    std::vector<cv_helper::threshold_range> DummyTagDetector::red_tag_thresholds;
@@ -22,9 +36,9 @@ namespace tag_detection_module{
                     red_L = {30, 70},
                     red_a = {150, 175},
                     red_b = {135, 165},
-                    blue_L = {0, 15},
-                    blue_a = {130, 160},
-                    blue_b = {80, 100};
+                    blue_L = {0, 20},
+                    blue_a = {140, 160},
+                    blue_b = {80, 95};
                     
     green_tag_thresholds.push_back(green_L);
     green_tag_thresholds.push_back(green_a);
@@ -59,7 +73,6 @@ namespace tag_detection_module{
 
   DummyTagDetector::~DummyTagDetector(){
     this->extractor->~ColorChannelExtractor();
-    this->tag_centers.~vector();
   }
 
   const std::vector<cv::Point2d>& DummyTagDetector::tag_centers_() {
@@ -121,21 +134,81 @@ namespace tag_detection_module{
     std::vector<std::vector<cv::Point>>& g_centers = this->ExtractContours(thre_G, &g_tag);
     std::vector<std::vector<cv::Point>>& r_centers = this->ExtractContours(thre_R, &r_tag);
     std::vector<std::vector<cv::Point>>& b_centers = this->ExtractContours(thre_B, &b_tag);
-    cv_helper::CvHelper::GetContoursCenter(g_centers, &g_tag);
-    cv_helper::CvHelper::GetContoursCenter(r_centers, &r_tag);
-    cv_helper::CvHelper::GetContoursCenter(b_centers, &b_tag);
+    std::vector<cv::Point2f>& gt_centers = cv_helper::CvHelper::GetContoursCenter(g_centers, &g_tag);
+    std::vector<cv::Point2f>& rt_centers = cv_helper::CvHelper::GetContoursCenter(r_centers, &r_tag);
+    std::vector<cv::Point2f>& bt_centers = cv_helper::CvHelper::GetContoursCenter(b_centers, &b_tag);
+    
+    this->IdentifyTags(gt_centers, rt_centers, bt_centers);
 
 #ifdef _DEBUG
-    
+    cv::Mat& combined_res = frame2detect.clone();
+
+    for ( int i = 0; i < this->tag_centers.size(); ++i ) {
+      cv::line(combined_res, this->tag_centers.at(i), 
+        this->tag_centers.at((i+1)%4),
+        cv::Scalar(20), 2);
+    }
     //printf("Thresholding Time:%.3f sec\n", ((double)end-str)/CLOCKS_PER_SEC );
     
     //cv::imwrite("testl.bmp", thre_G);
-    //cv::imshow("Combined Result", Lab_image);
-    /*cv::imshow("TG Thresholded", g_tag);
+    cv::imshow("Combined Result", combined_res);
+    cv::imshow("TG Thresholded", g_tag);
     cv::imshow("TR Thresholded", r_tag);
-    cv::imshow("TB Thresholded", b_tag);*/
+    cv::imshow("TB Thresholded", b_tag);
 #endif
 
+    g_centers.~vector();
+    r_centers.~vector();
+    b_centers.~vector();
+    gt_centers.~vector();
+    rt_centers.~vector();
+    bt_centers.~vector();
     return this->tag_centers_();
+  }
+
+  std::vector<cv::Point2d>& DummyTagDetector::IdentifyTags(
+      std::vector<cv::Point2f> green_tags,
+      std::vector<cv::Point2f> red_tags,
+      std::vector<cv::Point2f> blue_tags) {
+    // if tag is occluded, just ignore this frame
+    if ( green_tags.size() < 2 || red_tags.size() < 1 || blue_tags.size() < 1)
+      return this->tag_centers;
+    
+    cv::Point2f g1 = green_tags.at(0),
+                g2 = green_tags.at(1),
+                r1 = red_tags.at(0),
+                b1 = blue_tags.at(0);
+    double angA = cv_helper::CvHelper::GetAngleCosP1P0P2(g1, b1, r1),
+           angB = cv_helper::CvHelper::GetAngleCosP1P0P2(g2, b1, r1);
+    
+    cv::Point2f true_g1, true_g2;
+    if ( angA > angB ) {
+      // the angA specify the actual G1 B R
+      true_g1 = g2;
+      true_g2 = g1;
+    } else {
+      true_g1 = g1;
+      true_g2 = g2;
+    }
+    if ( this->tag_centers.size() > 1 ) {
+      tag_detection_module::StablizePoint(
+            this->tag_centers.at(0), 
+            true_g1, 4);
+      tag_detection_module::StablizePoint(
+            this->tag_centers.at(1), 
+            true_g2, 4);
+      tag_detection_module::StablizePoint(
+            this->tag_centers.at(2), 
+            r1, 4);
+      tag_detection_module::StablizePoint(
+            this->tag_centers.at(3), 
+            b1, 4) ;
+    }
+    this->tag_centers.clear();
+    this->tag_centers.push_back(true_g1);
+    this->tag_centers.push_back(true_g2);
+    this->tag_centers.push_back(r1);
+    this->tag_centers.push_back(b1);
+    return this->tag_centers;
   }
 }// ns tag_detection_module

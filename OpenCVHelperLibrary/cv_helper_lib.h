@@ -57,6 +57,12 @@ namespace cv_helper{
     // if draw_image is not NULL, then draw it in this image
     static std::vector<cv::Point2f>& GetContoursCenter(
         const std::vector<std::vector<cv::Point>>& contours, cv::Mat* draw_image = NULL);
+
+    // get the cosine of angle P1 P0 P2
+    static double GetAngleCosP1P0P2( cv::Point pt1, cv::Point pt2, cv::Point pt0 );
+
+    // get the square of the euclidean distance between p1 and p2
+    static double GetSqrEuclideanDist(cv::Point pt1, cv::Point pt2);
   };
 
   // extractor to extract color channels by its channels that as CV_8U Mat

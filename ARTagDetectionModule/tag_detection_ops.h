@@ -58,11 +58,19 @@ namespace tag_detection_module{
     // extract an contour by give src image
     std::vector<std::vector<cv::Point>>& ExtractContours(
         cv::Mat& src, cv::Mat* contour_image = NULL);
-    
+    // identify the tags center points with given tags points
+    // the order should be [P1, P2, P3, P4] that specified in
+    // above
+    std::vector<cv::Point2d>& IdentifyTags(
+      std::vector<cv::Point2f> green_tags,
+      std::vector<cv::Point2f> red_tags,
+      std::vector<cv::Point2f> blue_tags);
+
+    // saved the ordered tag centers
     std::vector<cv::Point2d> tag_centers;
+
     cv_helper::ColorChannelExtractor* extractor;
     cv::Mat Lab_image;
-    cv::Mat contour_image;
     //tag thresholds in order of threshold for L a b
     static std::vector<cv_helper::threshold_range> green_tag_thresholds;
     static std::vector<cv_helper::threshold_range> blue_tag_thresholds;
