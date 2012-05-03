@@ -118,16 +118,5 @@ namespace cv_helper{
       }
     }
 
-    /*cv::MatConstIterator_<cv::Vec3b> itr = src.begin<cv::Vec3b>();
-    cv::MatIterator_<uchar> dtr = dst.begin<uchar>();
-    for ( itr; itr != src.end<cv::Vec3b>(); itr++, dtr++ ) {
-      if ( (*itr)[0] > l_left && (*itr)[0] < l_right &&
-           (*itr)[1] > a_left && (*itr)[1] < a_right &&
-           (*itr)[2] > b_left && (*itr)[2] < b_right ) {
-        (*dtr) = 255;
-      } else {
-        (*dtr) = 0;
-      }
-    }*/
   }
 }//ns cv_helper

@@ -73,7 +73,17 @@ namespace tag_detection_module{
                             //that is, connected components
           CV_CHAIN_APPROX_NONE); // all pixels of each contours
       this->contour_image = *(new cv::Mat(src.size(), CV_8U, cv::Scalar(255)));
-      cv::drawContours(contour_image, contours, 
+      
+      std::vector<std::vector<cv::Point>>::const_iterator 
+          itc = contours.begin();
+      while ( itc != contours.end() ) {
+        if ( itc->size() < 10 || itc->size() > 150 ) {
+          itc = contours.erase(itc);
+        } else {
+          ++itc;
+        }
+      }
+      cv::drawContours(this->contour_image, contours, 
           -1, //draw all contours
           cv::Scalar(0), // in black
           2); // with a thickness of 2
@@ -85,17 +95,12 @@ namespace tag_detection_module{
         const cv::Mat& frame2detect) {
     
     this->extractor->ExtractNewImage(frame2detect);
-    /*cv::Mat chn_L = this->extractor->get_channels("L");
-    cv::Mat chn_a = this->extractor->get_channels("a");
-    cv::Mat chn_b = this->extractor->get_channels("b");
-    */
     this->Lab_image = this->extractor->get_image_in_colorspace("Lab");
-#ifdef _DEBUG
-    clock_t str,end;
+
+    // thresholding 3 color tags
     cv::Mat thre_G(Lab_image.size(), CV_8U);
     cv::Mat thre_R(Lab_image.size(), CV_8U);
     cv::Mat thre_B(Lab_image.size(), CV_8U);
-    str = clock();
     cv_helper::CvHelper::LabThresholdingByRange(
         this->green_tag_thresholds,
         Lab_image, thre_G);
@@ -105,15 +110,21 @@ namespace tag_detection_module{
     cv_helper::CvHelper::LabThresholdingByRange(
         this->blue_tag_thresholds,
         Lab_image, thre_B);
-    end = clock();
-    printf("Thresholding Time:%.3f sec\n", ((double)end-str)/CLOCKS_PER_SEC );
-    //cv::Mat g_tag = this->ExtractContourImage(thre_G);
+    // extract coutour
+    cv::Mat& g_tag = this->ExtractContourImage(thre_G).clone();
+    cv::Mat& r_tag = this->ExtractContourImage(thre_R).clone();
+    cv::Mat& b_tag = this->ExtractContourImage(thre_B).clone();
+#ifdef _DEBUG
+    
+    //printf("Thresholding Time:%.3f sec\n", ((double)end-str)/CLOCKS_PER_SEC );
+    
     //cv::imwrite("testl.bmp", thre_G);
     cv::imshow("Combined Result", Lab_image);
-    cv::imshow("TG Thresholded", thre_G);
-    cv::imshow("TR Thresholded", thre_R);
-    cv::imshow("TB Thresholded", thre_B);
+    cv::imshow("TG Thresholded", g_tag);
+    cv::imshow("TR Thresholded", r_tag);
+    cv::imshow("TB Thresholded", b_tag);
 #endif
+
     return this->tag_centers_();
   }
 }// ns tag_detection_module

@@ -45,6 +45,8 @@ namespace cv_helper{
     // thresholding an image by given threshold_range for
     // L a b channels
     // the src image should be a 3 channels mat in Lab format
+    // this algorithm has optimized that should thresholding 
+    // an 640x480 image at less than 2 ms 
     static void LabThresholdingByRange(
         const std::vector<threshold_range>& lab_range, 
         const cv::Mat src, 
