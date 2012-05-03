@@ -91,7 +91,35 @@ namespace cv_helper{
             a_right = lab_range.at(1).right,
             b_left  = lab_range.at(2).left,
             b_right = lab_range.at(2).right;
-    
+    uchar tabL[256], taba[256], tabb[256];
+    for ( int i = 0; i< 256; ++i ) {
+      tabL[i] = ( i > l_left && i < l_right ) ? 255 : 0; 
+      taba[i] = ( i > a_left && i < a_right ) ? 255 : 0; 
+      tabb[i] = ( i > b_left && i < b_right ) ? 255 : 0; 
+      //cout<<"tabL["<<i<<"]:"<<(short) tabL[i]<<endl;
+    }
+
+    // scanning by 3 channels loop, this is the 
+    // fastest way in theory
+    int lines = src.rows, col = src.cols;
+    if ( src.isContinuous() ) {
+      col *= lines;
+      lines = 1; // it's now a 1D array
+    }
+    // for each pixels
+    for ( int j = 0; j < lines; ++j ) {
+      // pointer to first column of line j
+      const uchar* srcdata = src.ptr<uchar>(j);
+      uchar* dstdata = dst.ptr<uchar>(j);
+      for ( int i = 0; i < col; ++i ) {
+        //cout<<"tabL["<<i<<"]:"<<(short) tabL[*srcdata]<<endl;
+        
+        dstdata[i] = tabL[(*srcdata++)] + taba[(*srcdata++)];//tabL[(srcdata[i])] & taba[(srcdata[i+1])] & tabb[(srcdata[i+2])];
+        *srcdata++;//srcdata++;
+        //cout<<"dstdata["<<i<<"]:"<<(short)dstdata[i]<<endl;
+      }
+    }
+
     /*cv::MatConstIterator_<cv::Vec3b> itr = src.begin<cv::Vec3b>();
     cv::MatIterator_<uchar> dtr = dst.begin<uchar>();
     for ( itr; itr != src.end<cv::Vec3b>(); itr++, dtr++ ) {

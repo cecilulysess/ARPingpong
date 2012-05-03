@@ -96,24 +96,23 @@ namespace tag_detection_module{
     cv::Mat thre_R(Lab_image.size(), CV_8U);
     cv::Mat thre_B(Lab_image.size(), CV_8U);
     str = clock();
-    /*cv_helper::CvHelper::LabThresholdingByRange(
+    cv_helper::CvHelper::LabThresholdingByRange(
         this->green_tag_thresholds,
         Lab_image, thre_G);
-    cv_helper::CvHelper::LabThresholdingByRange(
+ /*   cv_helper::CvHelper::LabThresholdingByRange(
         this->red_tag_thresholds,
         Lab_image, thre_R);
     cv_helper::CvHelper::LabThresholdingByRange(
         this->blue_tag_thresholds,
         Lab_image, thre_B);*/
-    
     end = clock();
     printf("Thresholding Time:%.3f sec\n", ((double)end-str)/CLOCKS_PER_SEC );
-    cv::Mat g_tag = this->ExtractContourImage(thre_R);
+    //cv::Mat g_tag = this->ExtractContourImage(thre_G);
+    //cv::imwrite("test.bmp", thre_G);
     cv::imshow("Combined Result", Lab_image);
-    /*cv::imshow("Combined Result", Lab_image);
     cv::imshow("TG Thresholded", thre_G);
-    cv::imshow("TR Thresholded", thre_R);
-    cv::imshow("TB Thresholded", thre_B);*/
+    //cv::imshow("TR Thresholded", thre_R);
+    //cv::imshow("TB Thresholded", thre_B);
 #endif
     return this->tag_centers_();
   }
