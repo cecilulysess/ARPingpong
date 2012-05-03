@@ -23,7 +23,7 @@ namespace tag_detection_module{
                     red_a = {150, 175},
                     red_b = {135, 165},
                     blue_L = {0, 15},
-                    blue_a = {140, 160},
+                    blue_a = {130, 160},
                     blue_b = {80, 100};
                     
     green_tag_thresholds.push_back(green_L);
@@ -66,28 +66,34 @@ namespace tag_detection_module{
     return this->tag_centers;
   }
 
-  cv::Mat& DummyTagDetector::ExtractContourImage(cv::Mat& src){
-    std::vector<std::vector<cv::Point>> contours;
-    cv::findContours(src, contours, 
+  std::vector<std::vector<cv::Point>>& DummyTagDetector::ExtractContours(
+        cv::Mat& src, cv::Mat* contour_image){
+    std::vector<std::vector<cv::Point>>* contours = new 
+      std::vector<std::vector<cv::Point>>();
+    cv::findContours(src, *contours, 
           CV_RETR_EXTERNAL, // retrieve external contours, 
                             //that is, connected components
           CV_CHAIN_APPROX_NONE); // all pixels of each contours
-      this->contour_image = *(new cv::Mat(src.size(), CV_8U, cv::Scalar(255)));
+    if ( contour_image != NULL ) {
+      contour_image->create(src.size(), CV_8U);
+    }
       
       std::vector<std::vector<cv::Point>>::const_iterator 
-          itc = contours.begin();
-      while ( itc != contours.end() ) {
+          itc = contours->begin();
+      while ( itc != contours->end() ) {
         if ( itc->size() < 10 || itc->size() > 150 ) {
-          itc = contours.erase(itc);
+          itc = contours->erase(itc);
         } else {
           ++itc;
         }
       }
-      cv::drawContours(this->contour_image, contours, 
-          -1, //draw all contours
-          cv::Scalar(0), // in black
-          2); // with a thickness of 2
-      return this->contour_image;
+      if ( contour_image != NULL ) {
+        cv::drawContours(*contour_image, *contours, 
+            -1, //draw all contours
+            cv::Scalar(0), // in black
+            2); // with a thickness of 2
+      }
+      return *contours;
   }
 
 
@@ -101,28 +107,33 @@ namespace tag_detection_module{
     cv::Mat thre_G(Lab_image.size(), CV_8U);
     cv::Mat thre_R(Lab_image.size(), CV_8U);
     cv::Mat thre_B(Lab_image.size(), CV_8U);
-    cv_helper::CvHelper::LabThresholdingByRange(
+    cv_helper::CvHelper::Thresholding3ChannelsByRange(
         this->green_tag_thresholds,
         Lab_image, thre_G);
-    cv_helper::CvHelper::LabThresholdingByRange(
+    cv_helper::CvHelper::Thresholding3ChannelsByRange(
         this->red_tag_thresholds,
         Lab_image, thre_R);
-    cv_helper::CvHelper::LabThresholdingByRange(
+    cv_helper::CvHelper::Thresholding3ChannelsByRange(
         this->blue_tag_thresholds,
         Lab_image, thre_B);
     // extract coutour
-    cv::Mat& g_tag = this->ExtractContourImage(thre_G).clone();
-    cv::Mat& r_tag = this->ExtractContourImage(thre_R).clone();
-    cv::Mat& b_tag = this->ExtractContourImage(thre_B).clone();
+    cv::Mat g_tag, r_tag, b_tag;
+    std::vector<std::vector<cv::Point>>& g_centers = this->ExtractContours(thre_G, &g_tag);
+    std::vector<std::vector<cv::Point>>& r_centers = this->ExtractContours(thre_R, &r_tag);
+    std::vector<std::vector<cv::Point>>& b_centers = this->ExtractContours(thre_B, &b_tag);
+    cv_helper::CvHelper::GetContoursCenter(g_centers, &g_tag);
+    cv_helper::CvHelper::GetContoursCenter(r_centers, &r_tag);
+    cv_helper::CvHelper::GetContoursCenter(b_centers, &b_tag);
+
 #ifdef _DEBUG
     
     //printf("Thresholding Time:%.3f sec\n", ((double)end-str)/CLOCKS_PER_SEC );
     
     //cv::imwrite("testl.bmp", thre_G);
-    cv::imshow("Combined Result", Lab_image);
-    cv::imshow("TG Thresholded", g_tag);
+    //cv::imshow("Combined Result", Lab_image);
+    /*cv::imshow("TG Thresholded", g_tag);
     cv::imshow("TR Thresholded", r_tag);
-    cv::imshow("TB Thresholded", b_tag);
+    cv::imshow("TB Thresholded", b_tag);*/
 #endif
 
     return this->tag_centers_();

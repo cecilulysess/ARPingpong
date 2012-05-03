@@ -78,7 +78,7 @@ namespace cv_helper{
     }
   }
 
-  void CvHelper::LabThresholdingByRange(
+  void CvHelper::Thresholding3ChannelsByRange(
         const std::vector<threshold_range>& lab_range, 
         const cv::Mat src, 
         cv::Mat dst) {
@@ -118,5 +118,21 @@ namespace cv_helper{
       }
     }
 
+  }
+
+  std::vector<cv::Point2f>& CvHelper::GetContoursCenter(
+        const std::vector<std::vector<cv::Point>>& contours, cv::Mat* draw_image ) {
+    float radius;
+    std::vector<cv::Point2f>* centers = new std::vector<cv::Point2f>();
+    for ( int i = 0 ; i < contours.size(); ++i ) {
+      cv::Point2f center;
+      cv::minEnclosingCircle(cv::Mat(contours.at(i)), center, radius);
+      centers->push_back(center);
+      if ( draw_image != NULL ) {
+        cv::circle(*draw_image,cv::Point(center),
+            static_cast<int>(radius),cv::Scalar(0),2);
+      }      
+    }
+    return *centers;
   }
 }//ns cv_helper

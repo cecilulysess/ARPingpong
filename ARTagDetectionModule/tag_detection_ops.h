@@ -56,8 +56,9 @@ namespace tag_detection_module{
   private:
     void DetectTags_();
     // extract an contour by give src image
-    cv::Mat& ExtractContourImage(cv::Mat& src);
-
+    std::vector<std::vector<cv::Point>>& ExtractContours(
+        cv::Mat& src, cv::Mat* contour_image = NULL);
+    
     std::vector<cv::Point2d> tag_centers;
     cv_helper::ColorChannelExtractor* extractor;
     cv::Mat Lab_image;

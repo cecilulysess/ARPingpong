@@ -1,6 +1,7 @@
 #ifndef CV_HELPER_LIB_H_
 #define CV_HELPER_LIB_H_
 
+#include <opencv2\core\core.hpp>
 #include <vector>
 #include <map>
 
@@ -43,14 +44,19 @@ namespace cv_helper{
     static void show_matrix_fc64(const cv::Mat& matrix);
     
     // thresholding an image by given threshold_range for
-    // L a b channels
+    // 3 channels image
     // the src image should be a 3 channels mat in Lab format
     // this algorithm has optimized that should thresholding 
     // an 640x480 image at less than 2 ms 
-    static void LabThresholdingByRange(
+    static void Thresholding3ChannelsByRange(
         const std::vector<threshold_range>& lab_range, 
         const cv::Mat src, 
         cv::Mat dst);
+
+    // get the center point of contours provided by contours
+    // if draw_image is not NULL, then draw it in this image
+    static std::vector<cv::Point2f>& GetContoursCenter(
+        const std::vector<std::vector<cv::Point>>& contours, cv::Mat* draw_image = NULL);
   };
 
   // extractor to extract color channels by its channels that as CV_8U Mat
