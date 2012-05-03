@@ -85,6 +85,22 @@ namespace cv_helper{
     if ( src.channels() != 3 ) {
       throw std::invalid_argument("Source image is not a 3 channel image");
     }
-
+    double  l_left  = lab_range.at(0).left,
+            l_right = lab_range.at(0).right,
+            a_left  = lab_range.at(1).left,
+            a_right = lab_range.at(1).right,
+            b_left  = lab_range.at(2).left,
+            b_right = lab_range.at(2).right;
+    cv::MatConstIterator_<cv::Vec3b> itr = src.begin<cv::Vec3b>();
+    cv::MatIterator_<uchar> dtr = dst.begin<uchar>();
+    for ( itr; itr != src.end<cv::Vec3b>(); itr++, dtr++ ) {
+      if ( (*itr)[0] > l_left && (*itr)[0] < l_right &&
+           (*itr)[1] > a_left && (*itr)[1] < a_right &&
+           (*itr)[2] > b_left && (*itr)[2] < b_right ) {
+        (*dtr) = 255;
+      } else {
+        (*dtr) = 0;
+      }
+    }
   }
 }//ns cv_helper

@@ -5,20 +5,34 @@
 #include <opencv2\imgproc\imgproc.hpp>
 
 namespace tag_detection_module{
-  std::vector<threshold_range> DummyTagDetector::green_tag_thresholds;
+  std::vector<cv_helper::threshold_range> DummyTagDetector::green_tag_thresholds;
+  std::vector<cv_helper::threshold_range> DummyTagDetector::blue_tag_thresholds;
+   std::vector<cv_helper::threshold_range> DummyTagDetector::red_tag_thresholds;
   bool DummyTagDetector::is_threshold_ranges_inited = false;
 
-  std::vector<threshold_range>& DummyTagDetector::InitThresholdRanges(){
+  std::vector<cv_helper::threshold_range>& DummyTagDetector::InitThresholdRanges(){
     if ( is_threshold_ranges_inited ) {
       return green_tag_thresholds;
     }
-    threshold_range green_L = {150, 175 },
-                    green_a = {50,  70  },
-                    green_b = {160, 190 };
-
+    cv_helper::threshold_range green_L = {140, 175 },
+                    green_a = {50,  85  },
+                    green_b = {150, 180 },
+                    red_L = {30, 55},
+                    red_a = {150, 170},
+                    red_b = {135, 160},
+                    blue_L = {0, 15},
+                    blue_a = {140, 160},
+                    blue_b = {80, 100};
+                    
     green_tag_thresholds.push_back(green_L);
     green_tag_thresholds.push_back(green_a);
     green_tag_thresholds.push_back(green_b);
+    red_tag_thresholds.push_back(red_L);
+    red_tag_thresholds.push_back(red_a);
+    red_tag_thresholds.push_back(red_b);
+    blue_tag_thresholds.push_back(blue_L);
+    blue_tag_thresholds.push_back(blue_a);
+    blue_tag_thresholds.push_back(blue_b);
     DummyTagDetector::is_threshold_ranges_inited = true;
     return green_tag_thresholds;
   }
@@ -31,12 +45,12 @@ namespace tag_detection_module{
     cv::namedWindow("L Channel");
     cv::namedWindow("a Channel");
     cv::namedWindow("b Channel");
-    cv::namedWindow("L Thresholded");
-    cv::namedWindow("a Thresholded");
-    cv::namedWindow("b Thresholded");
+    cv::namedWindow("TG Thresholded");
+    cv::namedWindow("TB Thresholded");
+    cv::namedWindow("TR Thresholded");
     cv::namedWindow("Combined Result");
-    //CvMouseCallback onMouse = &cv_helper::CvHelper::PrintPointValueWhenLeftClick;
-    //::setMouseCallback("Combined Result", onMouse, (void*) &Lab_image);
+    CvMouseCallback onMouse = &cv_helper::CvHelper::PrintPointValueWhenLeftClick;
+    cv::setMouseCallback("Combined Result", onMouse, (void*) &Lab_image);
 #endif
     this->extractor = (new cv_helper::ColorChannelExtractor());
   }
@@ -54,21 +68,35 @@ namespace tag_detection_module{
         const cv::Mat& frame2detect) {
     
     this->extractor->ExtractNewImage(frame2detect);
-    cv::Mat chn_L = this->extractor->get_channels("L");
+    /*cv::Mat chn_L = this->extractor->get_channels("L");
     cv::Mat chn_a = this->extractor->get_channels("a");
     cv::Mat chn_b = this->extractor->get_channels("b");
-    
+    */
+    this->Lab_image = this->extractor->get_image_in_colorspace("Lab");
 #ifdef _DEBUG
-    cv::imshow("L Channel", chn_L);
+    /*cv::imshow("L Channel", chn_L);
     cv::imshow("a Channel", chn_a);
-    cv::imshow("b Channel", chn_b);
-    cv::Mat thre_L(chn_L.size(), CV_8U);
-    threshold_range rang_L = this->green_tag_thresholds.at(0);
-    cv::threshold(chn_L, thre_L, rang_L.right, 255, CV_THRESH_TOZERO_INV);
-    cv::threshold(thre_L, thre_L, rang_L.left, 255, CV_THRESH_BINARY);
-    /*this->Lab_image = this->extractor->get_image_in_colorspace("Lab");
-    cv::imshow("Combined Result", Lab_image);*/
-    cv::imshow("L Thresholded", thre_L);
+    cv::imshow("b Channel", chn_b);*/
+    cv::Mat thre_G(Lab_image.size(), CV_8U);
+    cv::Mat thre_R(Lab_image.size(), CV_8U);
+    cv::Mat thre_B(Lab_image.size(), CV_8U);
+    //cv_helper::threshold_range rang_L = this->green_tag_thresholds.at(0);
+    cv_helper::CvHelper::LabThresholdingByRange(
+        this->green_tag_thresholds,
+        Lab_image, thre_G);
+    cv_helper::CvHelper::LabThresholdingByRange(
+        this->red_tag_thresholds,
+        Lab_image, thre_R);
+    cv_helper::CvHelper::LabThresholdingByRange(
+        this->blue_tag_thresholds,
+        Lab_image, thre_B);
+    /*cv::threshold(chn_L, thre_L, rang_L.right, 255, CV_THRESH_TOZERO_INV);
+    cv::threshold(thre_L, thre_L, rang_L.left, 255, CV_THRESH_BINARY);*/
+    
+    cv::imshow("Combined Result", Lab_image);
+    cv::imshow("TG Thresholded", thre_G);
+    cv::imshow("TR Thresholded", thre_R);
+    cv::imshow("TB Thresholded", thre_B);
 #endif
     return this->tag_centers_();
   }

@@ -51,7 +51,7 @@ namespace tag_detection_module{
     
     const std::vector<cv::Point2d>& DetectTags(
         const cv::Mat& frame2detect);
-    static std::vector<threshold_range>& InitThresholdRanges();
+    static std::vector<cv_helper::threshold_range>& InitThresholdRanges();
 
   private:
     void DetectTags_();
@@ -60,7 +60,9 @@ namespace tag_detection_module{
     cv_helper::ColorChannelExtractor* extractor;
     cv::Mat Lab_image;
     //tag thresholds in order of threshold for L a b
-    static std::vector<threshold_range> green_tag_thresholds;
+    static std::vector<cv_helper::threshold_range> green_tag_thresholds;
+    static std::vector<cv_helper::threshold_range> blue_tag_thresholds;
+    static std::vector<cv_helper::threshold_range> red_tag_thresholds;
 
     static bool is_threshold_ranges_inited;
     /*std::vector<threshold_range> L_channel_thresholds;
