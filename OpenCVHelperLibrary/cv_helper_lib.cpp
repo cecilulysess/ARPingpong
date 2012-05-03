@@ -96,7 +96,7 @@ namespace cv_helper{
       tabL[i] = ( i > l_left && i < l_right ) ? 255 : 0; 
       taba[i] = ( i > a_left && i < a_right ) ? 255 : 0; 
       tabb[i] = ( i > b_left && i < b_right ) ? 255 : 0; 
-      //cout<<"tabL["<<i<<"]:"<<(short) tabL[i]<<endl;
+      //cout<<"taba["<<i<<"]:"<<(short) taba[i]<<endl;
     }
 
     // scanning by 3 channels loop, this is the 
@@ -107,16 +107,14 @@ namespace cv_helper{
       lines = 1; // it's now a 1D array
     }
     // for each pixels
+    int src_pix_idx = 0;
     for ( int j = 0; j < lines; ++j ) {
       // pointer to first column of line j
       const uchar* srcdata = src.ptr<uchar>(j);
       uchar* dstdata = dst.ptr<uchar>(j);
       for ( int i = 0; i < col; ++i ) {
-        //cout<<"tabL["<<i<<"]:"<<(short) tabL[*srcdata]<<endl;
-        
-        dstdata[i] = tabL[(*srcdata++)] + taba[(*srcdata++)];//tabL[(srcdata[i])] & taba[(srcdata[i+1])] & tabb[(srcdata[i+2])];
-        *srcdata++;//srcdata++;
-        //cout<<"dstdata["<<i<<"]:"<<(short)dstdata[i]<<endl;
+        dstdata[i] = tabL[(srcdata[src_pix_idx])] & taba[srcdata[src_pix_idx+1]] & tabb[(srcdata[src_pix_idx+2])];
+        src_pix_idx+=3;
       }
     }
 

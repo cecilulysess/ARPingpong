@@ -5,8 +5,8 @@
 #include "ARTagDetectionModule\tag_detection_ops.h"
 int main() {
   cv::VideoCapture webcam(1);
-  webcam.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-  webcam.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+  //webcam.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+  //webcam.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
   
   cv::Mat frame;
   if (!webcam.isOpened()) {
