@@ -91,7 +91,8 @@ namespace cv_helper{
             a_right = lab_range.at(1).right,
             b_left  = lab_range.at(2).left,
             b_right = lab_range.at(2).right;
-    cv::MatConstIterator_<cv::Vec3b> itr = src.begin<cv::Vec3b>();
+    
+    /*cv::MatConstIterator_<cv::Vec3b> itr = src.begin<cv::Vec3b>();
     cv::MatIterator_<uchar> dtr = dst.begin<uchar>();
     for ( itr; itr != src.end<cv::Vec3b>(); itr++, dtr++ ) {
       if ( (*itr)[0] > l_left && (*itr)[0] < l_right &&
@@ -101,6 +102,6 @@ namespace cv_helper{
       } else {
         (*dtr) = 0;
       }
-    }
+    }*/
   }
 }//ns cv_helper

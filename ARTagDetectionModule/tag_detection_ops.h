@@ -55,10 +55,13 @@ namespace tag_detection_module{
 
   private:
     void DetectTags_();
+    // extract an contour by give src image
+    cv::Mat& ExtractContourImage(cv::Mat& src);
 
     std::vector<cv::Point2d> tag_centers;
     cv_helper::ColorChannelExtractor* extractor;
     cv::Mat Lab_image;
+    cv::Mat contour_image;
     //tag thresholds in order of threshold for L a b
     static std::vector<cv_helper::threshold_range> green_tag_thresholds;
     static std::vector<cv_helper::threshold_range> blue_tag_thresholds;

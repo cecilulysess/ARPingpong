@@ -1,5 +1,7 @@
 #include "tag_detection_ops.h"
 #include "OpenCVHelperLibrary\cv_helper_lib.h"
+#include <time.h>
+#include <stdio.h>
 
 #include <opencv2\highgui\highgui.hpp>
 #include <opencv2\imgproc\imgproc.hpp>
@@ -15,8 +17,8 @@ namespace tag_detection_module{
       return green_tag_thresholds;
     }
     cv_helper::threshold_range green_L = {140, 175 },
-                    green_a = {50,  85  },
-                    green_b = {150, 180 },
+                    green_a = {50,  105 }, //85
+                    green_b = {140, 180 },
                     red_L = {30, 55},
                     red_a = {150, 170},
                     red_b = {135, 160},
@@ -64,6 +66,21 @@ namespace tag_detection_module{
     return this->tag_centers;
   }
 
+  cv::Mat& DummyTagDetector::ExtractContourImage(cv::Mat& src){
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(src, contours, 
+          CV_RETR_EXTERNAL, // retrieve external contours, 
+                            //that is, connected components
+          CV_CHAIN_APPROX_NONE); // all pixels of each contours
+      this->contour_image = *(new cv::Mat(src.size(), CV_8U, cv::Scalar(255)));
+      cv::drawContours(contour_image, contours, 
+          -1, //draw all contours
+          cv::Scalar(0), // in black
+          2); // with a thickness of 2
+      return this->contour_image;
+  }
+
+
   const std::vector<cv::Point2d>& DummyTagDetector::DetectTags(
         const cv::Mat& frame2detect) {
     
@@ -74,14 +91,12 @@ namespace tag_detection_module{
     */
     this->Lab_image = this->extractor->get_image_in_colorspace("Lab");
 #ifdef _DEBUG
-    /*cv::imshow("L Channel", chn_L);
-    cv::imshow("a Channel", chn_a);
-    cv::imshow("b Channel", chn_b);*/
+    clock_t str,end;
     cv::Mat thre_G(Lab_image.size(), CV_8U);
     cv::Mat thre_R(Lab_image.size(), CV_8U);
     cv::Mat thre_B(Lab_image.size(), CV_8U);
-    //cv_helper::threshold_range rang_L = this->green_tag_thresholds.at(0);
-    cv_helper::CvHelper::LabThresholdingByRange(
+    str = clock();
+    /*cv_helper::CvHelper::LabThresholdingByRange(
         this->green_tag_thresholds,
         Lab_image, thre_G);
     cv_helper::CvHelper::LabThresholdingByRange(
@@ -89,14 +104,16 @@ namespace tag_detection_module{
         Lab_image, thre_R);
     cv_helper::CvHelper::LabThresholdingByRange(
         this->blue_tag_thresholds,
-        Lab_image, thre_B);
-    /*cv::threshold(chn_L, thre_L, rang_L.right, 255, CV_THRESH_TOZERO_INV);
-    cv::threshold(thre_L, thre_L, rang_L.left, 255, CV_THRESH_BINARY);*/
+        Lab_image, thre_B);*/
     
+    end = clock();
+    printf("Thresholding Time:%.3f sec\n", ((double)end-str)/CLOCKS_PER_SEC );
+    cv::Mat g_tag = this->ExtractContourImage(thre_R);
     cv::imshow("Combined Result", Lab_image);
+    /*cv::imshow("Combined Result", Lab_image);
     cv::imshow("TG Thresholded", thre_G);
     cv::imshow("TR Thresholded", thre_R);
-    cv::imshow("TB Thresholded", thre_B);
+    cv::imshow("TB Thresholded", thre_B);*/
 #endif
     return this->tag_centers_();
   }

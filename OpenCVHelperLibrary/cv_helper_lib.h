@@ -78,7 +78,7 @@ namespace cv_helper{
 
 
   protected:
-    void ExtractLabChannels();
+    void ExtractLabChannels(bool is_extract_all_channels);
     void ExtractBGRChannels();
     void ExtractHSVChannels();
 
@@ -88,8 +88,10 @@ namespace cv_helper{
 
     const cv::Mat* proc_image;
     std::map<const std::string, cv::Mat> channels;
-    // tag for lazy init
+    // tag for lazy init for each channels
     bool is_BGR_ready, is_Lab_ready, is_HSV_ready;
+    // tag for 3 channels convert
+    bool is_Lab_converted;
   };
 }//ns cv_helper
 

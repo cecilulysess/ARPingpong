@@ -11,6 +11,7 @@ namespace cv_helper{
     this->is_HSV_ready = false;
     this->is_Lab_ready = false;
     this->is_BGR_ready = false;
+    this->is_Lab_converted = false;
     this->proc_image = NULL;
   }
   
@@ -51,7 +52,7 @@ namespace cv_helper{
           channel_name.compare("a") == 0  ||
           channel_name.compare("b") == 0 ) &&
           !this->is_Lab_ready ) {
-      this->ExtractLabChannels();
+      this->ExtractLabChannels(true);
     }
       
     //this->channels
@@ -80,8 +81,8 @@ namespace cv_helper{
       this->ExtractHSVChannels();
     }
     if ( colorspace.compare("Lab") == 0  &&
-          !this->is_Lab_ready ) {
-      this->ExtractLabChannels();
+      !this->is_Lab_converted ) {
+      this->ExtractLabChannels(false);
     }
     //this->channels
     std::map<const std::string, cv::Mat>::iterator itr = 
@@ -101,32 +102,40 @@ namespace cv_helper{
     this->is_HSV_ready = false;
     this->is_Lab_ready = false;
     this->is_BGR_ready = false;
+    this->is_Lab_converted = false;
     this->CleanChannels();
   }
 
-  void ColorChannelExtractor::ExtractLabChannels() {
+  void ColorChannelExtractor::ExtractLabChannels(bool is_extract_all_channels) {
     if ( this->is_Lab_ready ) {
       return;
     } else {
-      cv::Mat lab_image(this->proc_image->size(), this->proc_image->type());
-      cv::Mat channel_L(this->proc_image->size(), CV_8U);
-      cv::Mat channel_a(this->proc_image->size(), CV_8U);
-      cv::Mat channel_b(this->proc_image->size(), CV_8U);
-      cv::cvtColor(*(this->proc_image), lab_image, CV_BGR2Lab);
-      cv::Mat_<uchar>::iterator itl = channel_L.begin<uchar>(),
-                                ita = channel_a.begin<uchar>(),
-                                itb = channel_b.begin<uchar>();
-      this->channels["Lab"] = lab_image;
-      for ( cv::MatIterator_<cv::Vec3b> itr = lab_image.begin<cv::Vec3b>();
-          itr != lab_image.end<cv::Vec3b>(); itr++, itl++, ita++, itb++  ) {
-        (*itl) = (*itr)[0];
-        (*ita) = (*itr)[1];
-        (*itb) = (*itr)[2];
+      if ( is_extract_all_channels ) {
+        cv::Mat lab_image(this->proc_image->size(), this->proc_image->type());
+        cv::Mat channel_L(this->proc_image->size(), CV_8U);
+        cv::Mat channel_a(this->proc_image->size(), CV_8U);
+        cv::Mat channel_b(this->proc_image->size(), CV_8U);
+        cv::cvtColor(*(this->proc_image), lab_image, CV_BGR2Lab);
+        cv::Mat_<uchar>::iterator itl = channel_L.begin<uchar>(),
+                                  ita = channel_a.begin<uchar>(),
+                                  itb = channel_b.begin<uchar>();
+        this->channels["Lab"] = lab_image;
+        for ( cv::MatIterator_<cv::Vec3b> itr = lab_image.begin<cv::Vec3b>();
+            itr != lab_image.end<cv::Vec3b>(); itr++, itl++, ita++, itb++  ) {
+          (*itl) = (*itr)[0];
+          (*ita) = (*itr)[1];
+          (*itb) = (*itr)[2];
+        }
+        this->channels["L"] = channel_L;
+        this->channels["a"] = channel_a;
+        this->channels["b"] = channel_b;
+        this->is_Lab_ready = true;
+      } else {
+        cv::Mat lab_image(this->proc_image->size(), this->proc_image->type());
+        cv::cvtColor(*(this->proc_image), lab_image, CV_BGR2Lab);
+        this->channels["Lab"] = lab_image;
+        this->is_Lab_converted = true;
       }
-      this->channels["L"] = channel_L;
-      this->channels["a"] = channel_a;
-      this->channels["b"] = channel_b;
-      this->is_Lab_ready = true;
     }
   }
   void ColorChannelExtractor::ExtractBGRChannels() {
