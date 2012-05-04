@@ -33,8 +33,8 @@ namespace tag_detection_module{
     cv_helper::threshold_range green_L = {100, 175 },
                     green_a = {50,  105 }, //85
                     green_b = {140, 180 },
-                    red_L = {30, 70},
-                    red_a = {150, 175},
+                    red_L = {40, 90},
+                    red_a = {150, 190},
                     red_b = {135, 165},
                     blue_L = {0, 20},
                     blue_a = {140, 160},
